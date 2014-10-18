@@ -1,10 +1,15 @@
 package com.example.mytest.dao;
 
+import org.json.JSONObject;
+
+import android.content.Context;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.mytest.R;
-
-import android.content.Context;
+import com.example.mytest.dto.RequestDTO;
+import com.example.mytest.dto.ResponseDTO;
+import com.example.mytest.dto.ResponseDTOListener;
 
 public class HelpYouDAO extends NetworkDAO {
 
@@ -12,45 +17,48 @@ public class HelpYouDAO extends NetworkDAO {
 		super(context, context.getString(R.string.help_you_base_url));
 	}
 
-	public void sendDoesAnyoneNeedHelpRequest() {
-		this.sendGetRequest(new Response.Listener<String>() {
+	public void sendDoesAnyoneNeedHelpRequest(RequestDTO body, final ResponseDTOListener listener) {
+		this.sendGetRequest(new Response.Listener<JSONObject>() {
 		    @Override
-		    public void onResponse(String response) {
-		    	// TODO: Do something with success
+		    public void onResponse(JSONObject response) {
+		    	listener.successResponseRecieved(new ResponseDTO(response));
 		    }
 		}, new Response.ErrorListener() {
 		    @Override
 		    public void onErrorResponse(VolleyError error) {
-		    	// TODO: Do something with error
+		    	int status = error.networkResponse == null ? 0 : error.networkResponse.statusCode;
+		    	listener.errorResponseRecieved(status, error.getMessage());
 		    }
-		}, context.getString(R.string.help_you_anyone_need_help_url));
+		}, body.toJSON(), context.getString(R.string.help_you_anyone_need_help_url));
 	}
 	
-	public void sendWillHelpYouRequest() {
-		this.sendPostRequest(new Response.Listener<String>() {
+	public void sendWillHelpYouRequest(RequestDTO body, final ResponseDTOListener listener) {
+		this.sendPostRequest(new Response.Listener<JSONObject>() {
 		    @Override
-		    public void onResponse(String response) {
-		    	// TODO: Do something with success
+		    public void onResponse(JSONObject response) {
+		    	listener.successResponseRecieved(new ResponseDTO(response));
 		    }
 		}, new Response.ErrorListener() {
 		    @Override
 		    public void onErrorResponse(VolleyError error) {
-		    	// TODO: Do something with error
+		    	int status = error.networkResponse == null ? 0 : error.networkResponse.statusCode;
+		    	listener.errorResponseRecieved(status, error.getMessage());
 		    }
-		}, context.getString(R.string.help_you_will_help_url));
+		}, body.toJSON(), context.getString(R.string.help_you_will_help_url));
 	}
 	
-	public void sendHelpingYouUpdateRequest() {
-		this.sendPostRequest(new Response.Listener<String>() {
+	public void sendHelpingYouUpdateRequest(RequestDTO body, final ResponseDTOListener listener) {
+		this.sendPostRequest(new Response.Listener<JSONObject>() {
 		    @Override
-		    public void onResponse(String response) {
-		    	// TODO: Do something with success
+		    public void onResponse(JSONObject response) {
+		    	listener.successResponseRecieved(new ResponseDTO(response));
 		    }
 		}, new Response.ErrorListener() {
 		    @Override
 		    public void onErrorResponse(VolleyError error) {
-		    	// TODO: Do something with error
+		    	int status = error.networkResponse == null ? 0 : error.networkResponse.statusCode;
+		    	listener.errorResponseRecieved(status, error.getMessage());
 		    }
-		}, context.getString(R.string.help_you_update_url));
+		}, body.toJSON(), context.getString(R.string.help_you_update_url));
 	}
 }

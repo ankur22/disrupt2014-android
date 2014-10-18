@@ -3,7 +3,6 @@
 	<name>MyTest</name>
 	<comment></comment>
 	<projects>
-		<project>Volley</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

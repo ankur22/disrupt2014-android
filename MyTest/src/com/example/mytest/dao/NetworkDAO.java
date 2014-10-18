@@ -1,14 +1,16 @@
 package com.example.mytest.dao;
 
+import org.json.JSONObject;
+
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.mytest.dto.ResponseDTO;
 
 public abstract class NetworkDAO {
 	
@@ -20,31 +22,33 @@ public abstract class NetworkDAO {
 		this.baseURL = baseURL;
 	}
 	
-	protected void sendGetRequest(Listener<String> successListener, ErrorListener errorListener, String url) {
-		this.sendRequest(successListener, errorListener, this.baseURL + url, Method.GET);
+	protected void sendGetRequest(Listener<JSONObject> successListener, ErrorListener errorListener, JSONObject body, String url) {
+		sendRequest(successListener, errorListener, body, this.baseURL + url, Method.GET);
 	}
 	
-	protected void sendRequest(Listener<String> successListener, ErrorListener errorListener, String url,
-			int requestType) {
+	protected void sendRequest(Listener<JSONObject> successListener, ErrorListener errorListener,
+			JSONObject body, String url, int requestType) {
 		// Instantiate the RequestQueue.
 		RequestQueue queue = Volley.newRequestQueue(this.context);
 
+		Log.d("sendRequest", body.toString());
+		
 		// Request a string response from the provided URL.
-		StringRequest stringRequest = new StringRequest(requestType, url, successListener, errorListener);
+		JsonObjectRequest jsonRequest = new JsonObjectRequest(requestType, url, body, successListener, errorListener);
 		
 		// Add the request to the RequestQueue.
-		queue.add(stringRequest);
+		queue.add(jsonRequest);
 	}
 	
-	protected void sendPutRequest(Listener<String> successListener, ErrorListener errorListener, String url) {
-		this.sendRequest(successListener, errorListener, this.baseURL + url, Method.PUT);
+	protected void sendPutRequest(Listener<JSONObject> successListener, ErrorListener errorListener, JSONObject body, String url) {
+		sendRequest(successListener, errorListener, body, this.baseURL + url, Method.PUT);
 	}
 	
-	protected void sendPostRequest(Listener<String> successListener, ErrorListener errorListener, String url) {
-		this.sendRequest(successListener, errorListener, this.baseURL + url, Method.POST);
+	protected void sendPostRequest(Listener<JSONObject> successListener, ErrorListener errorListener, JSONObject body, String url) {
+		sendRequest(successListener, errorListener, body, this.baseURL + url, Method.POST);
 	}
 	
-	protected void sendDeleteRequest(Listener<String> successListener, ErrorListener errorListener, String url) {
-		this.sendRequest(successListener, errorListener, this.baseURL + url, Method.DELETE);
+	protected void sendDeleteRequest(Listener<JSONObject> successListener, ErrorListener errorListener, JSONObject body, String url) {
+		sendRequest(successListener, errorListener, body, this.baseURL + url, Method.DELETE);
 	}
 }

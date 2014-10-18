@@ -1,24 +1,33 @@
 package com.example.mytest.dto;
 
-import com.android.volley.VolleyError;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.util.Log;
 
 public class ResponseDTO {
-	private String body;
-	private VolleyError error;
+	String eventId;
 	
-	public void setBody(String body) {
-		this.body = body;
+	public ResponseDTO(JSONObject body) {
+		parseResponse(body);
 	}
 	
-	public void setError(VolleyError error) {
-		this.error = error;
+	private void parseResponse(JSONObject body) {
+		if (body != null && body.has("eventId")) {
+			try {
+				eventId = body.getString("eventId");
+			} catch (JSONException e) {
+				e.printStackTrace();
+				Log.i("parseResponse","Exception while attempting to get eventId from response");
+				eventId = "";
+			}
+		} else {
+			Log.i("parseResponse","No eventId in response");
+			eventId = "";
+		}
 	}
 	
-	public String getBody() {
-		return this.body;
-	}
-	
-	public VolleyError getError() {
-		return this.error;
+	public String getEventId() {
+		return eventId;
 	}
 }
