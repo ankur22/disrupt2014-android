@@ -12,14 +12,15 @@
     <string name="help_me_request_url">/help/me</string>
     <string name="help_me_update_url">/help/me</string>
     <string name="help_me_cancel_url">/help/me</string>
-    <string name="help_you_anyone_need_help_url">/help/you</string>
+    <string name="help_you_anyone_need_help_url">/help/search</string>
     <string name="help_you_will_help_url">/help/you</string>
     <string name="help_you_update_url">/help/you</string>
     <string name="login_ask_for_help_button_text">Ask Test</string>
     <string name="login_assist_button_text">Assist Test</string>
     <string name="login_ask_for_help_user_id">1</string>
     <string name="login_assist_user_id">2</string>
-    <string name="login_to_main_extra_id">EXTRA_ID</string>
+    <string name="extra_user_id">EXTRA_USER_ID</string>
+    <string name="extra_event_id">EXTRA_EVENT_ID</string>
     <string name="exit_app_title">Exit App</string>
     <string name="exit_app_message">Are you sure you would like to exit the app?</string>
     <string name="exit_app_yes_button">Yes</string>

@@ -44,7 +44,7 @@ public class LoginActivity extends Activity {
 	
 	public void login(String id) {
 		Intent intent = new Intent(this, MainActivity.class);
-		intent.putExtra(getString(R.string.login_to_main_extra_id), id);
+		intent.putExtra(getString(R.string.extra_user_id), id);
 		startActivity(intent);
 	}
 	

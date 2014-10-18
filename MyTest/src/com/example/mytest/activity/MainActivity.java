@@ -55,13 +55,24 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 		alarm = new Alarm(getApplicationContext(), this);
 		
 		Intent intent = getIntent();
-		this.userId = intent.getStringExtra(getString(R.string.login_to_main_extra_id));
+		this.userId = intent.getStringExtra(getString(R.string.extra_user_id));
+		location = new GPSCoordinates();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		alarm = new Alarm(getApplicationContext(), this);
 		location = new GPSCoordinates();
 	}
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		clearPollingUpdates();
+	}
+	
+	private void clearPollingUpdates() {
 		alarm.clearAlarm();
 		locationManager.removeUpdates(this);
 	}
@@ -218,12 +229,16 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 				@Override
 				public void successResponseRecieved(ResponseDTO responseDTO) {
 					eventId = responseDTO.getEventId();
+					if (eventId != null && eventId.equals("-1")) {
+						eventId = null;
+					}
 					if (eventId == null && !background) {
 						Toast.makeText(getApplicationContext(), "All is well in your neighbourhood.", Toast.LENGTH_SHORT).show();
 					} else if (eventId != null && background) {
 						Toast.makeText(getApplicationContext(), "Someone has requested help.", Toast.LENGTH_SHORT).show();
 					} else if (eventId != null && !background) {
 						startMapActivity();
+						clearPollingUpdates();
 					}
 					sentHelpYouRequest = false;
 				}
@@ -239,6 +254,8 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	
 	private void startMapActivity() {
 		Intent intent = new Intent(this, MapActivity.class);
+		intent.putExtra(getString(R.string.extra_user_id), userId);
+		intent.putExtra(getString(R.string.extra_event_id), eventId);
 		startActivity(intent);
 	}
 

@@ -18,7 +18,7 @@ public class HelpYouDAO extends NetworkDAO {
 	}
 
 	public void sendDoesAnyoneNeedHelpRequest(RequestDTO body, final ResponseDTOListener listener) {
-		this.sendGetRequest(new Response.Listener<JSONObject>() {
+		this.sendPostRequest(new Response.Listener<JSONObject>() {
 		    @Override
 		    public void onResponse(JSONObject response) {
 		    	listener.successResponseRecieved(new ResponseDTO(response));
