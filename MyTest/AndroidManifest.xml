@@ -9,8 +9,12 @@
         android:targetSdkVersion="18" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-feature android:glEsVersion="0x00020000" android:required="true"/> 
 
-    <application
+    
+
+<application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -29,6 +33,12 @@
             android:name="com.example.mytest.activity.MainActivity"
             android:label="@string/app_name"
             android:parentActivityName="com.example.mytest.activity.LoginActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+<activity
+            android:name="com.example.mytest.activity.MapActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="com.example.mytest.activity.MapActivity"
             android:screenOrientation="portrait" >
         </activity>
     </application>

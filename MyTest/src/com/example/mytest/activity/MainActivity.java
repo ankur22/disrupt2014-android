@@ -222,6 +222,8 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 						Toast.makeText(getApplicationContext(), "All is well in your neighbourhood.", Toast.LENGTH_SHORT).show();
 					} else if (eventId != null && background) {
 						Toast.makeText(getApplicationContext(), "Someone has requested help.", Toast.LENGTH_SHORT).show();
+					} else if (eventId != null && !background) {
+						startMapActivity();
 					}
 					sentHelpYouRequest = false;
 				}
@@ -233,6 +235,11 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 				}
 			});
 		}
+	}
+	
+	private void startMapActivity() {
+		Intent intent = new Intent(this, MapActivity.class);
+		startActivity(intent);
 	}
 
 	@Override
