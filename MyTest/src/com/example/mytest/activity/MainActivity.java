@@ -43,6 +43,7 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		clearPollingUpdates();
 		setContentView(R.layout.activity_main);
 		setupHelpMeButton();
 		setupHelpYouButton();
@@ -52,6 +53,7 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 		sentHelpYouRequest = false;
 		helpMeDAO = new HelpMeDAO(this.getApplicationContext());
 		helpYouDAO = new HelpYouDAO(this.getApplicationContext());
+		
 		alarm = new Alarm(getApplicationContext(), this);
 		
 		Intent intent = getIntent();
@@ -62,8 +64,13 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	@Override
 	protected void onResume() {
 		super.onResume();
-		alarm = new Alarm(getApplicationContext(), this);
-		location = new GPSCoordinates();
+		clearPollingUpdates();
+		if (alarm != null) {
+			alarm = new Alarm(getApplicationContext(), this);
+		}
+		if (locationManager != null) {
+			setupLocationManager();
+		}
 	}
 	
 	@Override
@@ -73,8 +80,12 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	}
 	
 	private void clearPollingUpdates() {
-		alarm.clearAlarm();
-		locationManager.removeUpdates(this);
+		if (alarm != null) {
+			alarm.clearAlarm();
+		}
+		if (locationManager != null) {
+			locationManager.removeUpdates(this);
+		}
 	}
 	
 	private void setupLocationManager() {
@@ -163,7 +174,7 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	}
 	
 	private void sendCancelHelpMeRequest() {
-		RequestDTO requestBody = new RequestDTO(userId, location, eventId);
+		RequestDTO requestBody = new RequestDTO(eventId);
 		
 		helpMeDAO.sendCancelHelpMeRequest(requestBody, new ResponseDTOListener() {
 			

@@ -12,7 +12,7 @@ public class ResponseDTO {
 		parseResponse(body);
 	}
 	
-	private void parseResponse(JSONObject body) {
+	protected void parseResponse(JSONObject body) {
 		if (body != null && body.has("eventId")) {
 			try {
 				eventId = body.getString("eventId");

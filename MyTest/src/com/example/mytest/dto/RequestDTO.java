@@ -12,6 +12,12 @@ public class RequestDTO {
 	private GPSCoordinates location;
 	private String eventId;
 	
+	public RequestDTO(String eventId) {
+		this.eventId = eventId;
+		this.userId = null;
+		this.location = null;
+	}
+	
 	public RequestDTO(String userId, GPSCoordinates location) {
 		this.userId = userId;
 		this.location = location;
@@ -27,18 +33,22 @@ public class RequestDTO {
 	public JSONObject toJSON() {
 		JSONObject jsonObject = new JSONObject();
 		
-		try {
-			jsonObject.put("userId", userId);
-		} catch (JSONException e) {
-			e.printStackTrace();
-			Log.w("toJSON", "Unable to convert userId into its JSON form.");
+		if (userId != null) {
+			try {
+				jsonObject.put("userId", userId);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				Log.w("toJSON", "Unable to convert userId into its JSON form.");
+			}
 		}
 		
-		try {
-			jsonObject.put("location", location.toJSON());
-		} catch (JSONException e) {
-			e.printStackTrace();
-			Log.w("toJSON", "Unable to convert location into its JSON form.");
+		if (location != null) {
+			try {
+				jsonObject.put("location", location.toJSON());
+			} catch (JSONException e) {
+				e.printStackTrace();
+				Log.w("toJSON", "Unable to convert location into its JSON form.");
+			}
 		}
 		
 		if (eventId != null && eventId.length() > 0) {

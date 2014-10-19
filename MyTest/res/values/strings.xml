@@ -15,6 +15,7 @@
     <string name="help_you_anyone_need_help_url">/help/search</string>
     <string name="help_you_will_help_url">/help/you</string>
     <string name="help_you_update_url">/help/you</string>
+    <string name="help_you_get_event_url">/event/</string>
     <string name="login_ask_for_help_button_text">Ask Test</string>
     <string name="login_assist_button_text">Assist Test</string>
     <string name="login_ask_for_help_user_id">1</string>
@@ -25,5 +26,7 @@
     <string name="exit_app_message">Are you sure you would like to exit the app?</string>
     <string name="exit_app_yes_button">Yes</string>
     <string name="exit_app_no_button">No</string>
+    <string name="esri_map_url">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</string>
+    <string name="geocode_url">http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer</string>
 
 </resources>
