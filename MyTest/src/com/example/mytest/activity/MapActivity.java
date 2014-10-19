@@ -1,22 +1,14 @@
 package com.example.mytest.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.esri.android.map.GraphicsLayer;
-import com.esri.android.map.MapView;
-import com.esri.android.map.ags.ArcGISTiledMapServiceLayer;
-import com.esri.android.map.event.OnStatusChangedListener;
-import com.esri.android.toolkit.map.MapViewHelper;
-import com.esri.core.geometry.Point;
-import com.esri.core.tasks.geocode.Locator;
 import com.example.mytest.R;
 import com.example.mytest.controller.Alarm;
 import com.example.mytest.controller.AlarmListener;
@@ -26,24 +18,27 @@ import com.example.mytest.dto.RequestDTO;
 import com.example.mytest.dto.ResponseDTO;
 import com.example.mytest.dto.ResponseDTOListener;
 import com.example.mytest.model.GPSCoordinates;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
-
-public class MapActivity extends Activity implements LocationListener, AlarmListener {
-	Locator locator;
-	
-	MapView mMapView;
-	GraphicsLayer mLocationLayer;
-	String mMapViewState;
-	MapViewHelper mvHelper;
-	
+public class MapActivity extends FragmentActivity implements LocationListener, AlarmListener {	
 	HelpYouDAO helpYouDAO;
 	LocationManager locationManager;
+	GoogleMap map;
 	
 	String userId;
 	GPSCoordinates location;
 	String eventId;
 	EventResponseDTO eventResponseDTO;
+	boolean zoomed = false;
+	
+	Marker helpee;
 	
 	Alarm alarm;
 
@@ -60,82 +55,53 @@ public class MapActivity extends Activity implements LocationListener, AlarmList
 		location = new GPSCoordinates();
 		
 		alarm = new Alarm(getApplicationContext(), this);
-
-		// Retrieve the map and initial extent from XML layout
-		mMapView = (MapView)findViewById(R.id.map);
-		// Add dynamic layer to MapView
-		mMapView.addLayer(new ArcGISTiledMapServiceLayer(getString(R.string.esri_map_url)));
 		
-		mLocationLayer = new GraphicsLayer();
-		mMapView.addLayer(mLocationLayer);
-		// set logo and enable wrap around
-		mMapView.setEsriLogoVisible(true);
-		mMapView.enableWrapAround(true);
+		setupMap();
 		
-		// Setup listener for map initialized
-		mMapView.setOnStatusChangedListener(new OnStatusChangedListener() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onStatusChanged(Object source, STATUS status) {
-				if (source == mMapView && status == STATUS.INITIALIZED) {
-
-					if (mMapViewState != null) {
-						mMapView.restoreState(mMapViewState);
-					}
-				}
-			}
-		});
-		
-		// Create a MapView Helper 
-		mvHelper = new MapViewHelper(mMapView);
-		
-		//setHelperPointsOnMap();
 		sendWillHelpYouRequest();
 	}
 	
-	private void setHelperPointsOnMap(GPSCoordinates coords, boolean me) {
-		mMapView = (MapView) findViewById(R.id.map); 
-		// Create drawable icon
-		int drawableId = R.drawable.you_marker;
-		if (me) {
-			drawableId = R.drawable.ic_launcher;
+	private void setupMap() {
+		SupportMapFragment fm = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+		map = fm.getMap(); 
+		map.setMyLocationEnabled(true);
+	}
+	
+	private void zoomToMyLocation(GPSCoordinates myCoords) {
+		if (!zoomed) {
+			zoomed = true;
+			map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myCoords.getLatitude(), myCoords.getLongitude()), 16));
 		}
-		final Drawable icon = getResources().getDrawable(drawableId);
-		// Make sure map has loaded before adding geometries 
-		mMapView.setOnStatusChangedListener(new OnStatusChangedListener() { 
-		  private static final long serialVersionUID = 1L; 
-		  public void onStatusChanged(Object source, STATUS status) { 
-		    // Add a graphic to represent ESRI Headquarters 
-		    int loaded = mvHelper.addMarkerGraphic(34.056695, -117.195693, 
-		                 "", "", null, icon, false, 0); 
-			if (loaded < 0) {
-				Log.d("TAG", "Marker Graphic not added to MapView"); 
-			} 
-		  } 
-		});
-		if (me) {
-			mMapView.zoomToResolution(new Point(coords.getLongitude(), coords.getLatitude()), 2);
+
+//        // You can customize the marker image using images bundled with
+//        // your app, or dynamically generated bitmaps. 
+//        map.addMarker(new MarkerOptions()
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.house_flag))
+//                .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
+//                .position(new LatLng(41.889, -87.622)));
+	}
+	
+	private Marker updateMarkerPosition(Marker marker, GPSCoordinates location) {
+		if (marker == null) {
+			marker = map.addMarker(new MarkerOptions()
+	          .icon(BitmapDescriptorFactory.fromResource(R.drawable.you_marker))
+	          .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
+	          .position(new LatLng(location.getLatitude(), location.getLongitude())));
+		} else {
+			marker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
 		}
+		
+		return marker;
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mMapView.pause();
-		mMapViewState = mMapView.retainState();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		// Start the MapView running again
-		if (mMapView != null) {
-			mMapView.unpause();
-			if (mMapViewState != null) {
-				mMapView.restoreState(mMapViewState);
-			}
-		}
 	}
 	
 	@Override
@@ -147,7 +113,7 @@ public class MapActivity extends Activity implements LocationListener, AlarmList
 	private void setupLocationManager() {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				7000, // 7 secs
+				10000, // 10 secs
 				10, this);
 	}
 	
@@ -185,8 +151,6 @@ public class MapActivity extends Activity implements LocationListener, AlarmList
 			@Override
 			public void successResponseRecieved(ResponseDTO responseDTO) {
 //				eventId = responseDTO.getEventId();
-				mvHelper.removeAllGraphics();
-				setHelperPointsOnMap(location, false);
 			}
 			
 			@Override
@@ -203,11 +167,11 @@ public class MapActivity extends Activity implements LocationListener, AlarmList
 			public void successResponseRecieved(ResponseDTO responseDTO) {
 //				eventId = responseDTO.getEventId();
 				eventResponseDTO = (EventResponseDTO)responseDTO;
-				mvHelper.removeAllGraphics();
-				setHelperPointsOnMap(eventResponseDTO.getHelpeeCoords(), true);
-				for(GPSCoordinates coords : eventResponseDTO.getHelpers()) {
-					setHelperPointsOnMap(coords, false);
-				}
+				helpee = updateMarkerPosition(helpee, eventResponseDTO.getHelpeeCoords());
+//				setHelperPointsOnMap(eventResponseDTO.getHelpeeCoords(), true);
+//				for(GPSCoordinates coords : eventResponseDTO.getHelpers()) {
+//					setHelperPointsOnMap(coords, false);
+//				}
 			}
 			
 			@Override
@@ -221,6 +185,7 @@ public class MapActivity extends Activity implements LocationListener, AlarmList
 	public void onLocationChanged(Location location) {
 		this.location.setLatitude(location.getLatitude());
 		this.location.setLongitude(location.getLongitude());
+		zoomToMyLocation(this.location);
 	}
 
 	@Override

@@ -7,8 +7,8 @@
     <string name="help_me_button_text">Help!</string>
     <string name="help_me_button_cancel_text">I\'m okay</string>
     <string name="help_you_button_text">Help Someone</string>
-    <string name="help_me_base_url">http://10.12.73.194:8080</string>
-    <string name="help_you_base_url">http://10.12.73.194:8080</string>
+    <string name="help_me_base_url">http://private-4ab7b-socialwatch.apiary-mock.com</string>
+    <string name="help_you_base_url">http://private-4ab7b-socialwatch.apiary-mock.com</string>
     <string name="help_me_request_url">/help/me</string>
     <string name="help_me_update_url">/help/me</string>
     <string name="help_me_cancel_url">/help/me</string>
@@ -26,7 +26,5 @@
     <string name="exit_app_message">Are you sure you would like to exit the app?</string>
     <string name="exit_app_yes_button">Yes</string>
     <string name="exit_app_no_button">No</string>
-    <string name="esri_map_url">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</string>
-    <string name="geocode_url">http://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer</string>
 
 </resources>

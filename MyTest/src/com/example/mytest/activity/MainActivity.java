@@ -91,7 +91,7 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	private void setupLocationManager() {
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				7000, // 7 secs
+				10000, // 10 secs
 				10, this);
 	}
 	

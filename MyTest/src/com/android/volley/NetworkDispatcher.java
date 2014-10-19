@@ -16,6 +16,7 @@
 
 package com.android.volley;
 
+import android.annotation.SuppressLint;
 import android.net.TrafficStats;
 import android.os.Build;
 import android.os.Process;
@@ -70,7 +71,8 @@ public class NetworkDispatcher extends Thread {
         interrupt();
     }
 
-    @Override
+    @SuppressLint("NewApi")
+	@Override
     public void run() {
         Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
         Request request;
