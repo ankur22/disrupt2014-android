@@ -27,7 +27,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapActivity extends FragmentActivity implements LocationListener, AlarmListener {	
+public class MapActivity extends FragmentActivity implements LocationListener, AlarmListener {
 	HelpYouDAO helpYouDAO;
 	LocationManager locationManager;
 	GoogleMap map;

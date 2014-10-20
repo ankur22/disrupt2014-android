@@ -26,5 +26,7 @@
     <string name="exit_app_message">Are you sure you would like to exit the app?</string>
     <string name="exit_app_yes_button">Yes</string>
     <string name="exit_app_no_button">No</string>
+    <string name="progress_dialog_default_title">Please wait</string>
+    <string name="progress_dialog_default_message">Retrieving data now</string>
 
 </resources>

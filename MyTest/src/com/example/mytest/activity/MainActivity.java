@@ -1,6 +1,7 @@
 package com.example.mytest.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -39,6 +40,8 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	String userId;
 	GPSCoordinates location;
 	String eventId;
+	
+	ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,18 +50,21 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 		setContentView(R.layout.activity_main);
 		setupHelpMeButton();
 		setupHelpYouButton();
-		setupLocationManager();
 		
 		helpMeHelpStateOn = false;
 		sentHelpYouRequest = false;
 		helpMeDAO = new HelpMeDAO(this.getApplicationContext());
 		helpYouDAO = new HelpYouDAO(this.getApplicationContext());
 		
-		alarm = new Alarm(getApplicationContext(), this);
-		
 		Intent intent = getIntent();
 		this.userId = intent.getStringExtra(getString(R.string.extra_user_id));
 		location = new GPSCoordinates();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		clearPollingUpdates();
 	}
 	
 	@Override
@@ -82,9 +88,11 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	private void clearPollingUpdates() {
 		if (alarm != null) {
 			alarm.clearAlarm();
+			alarm = null;
 		}
 		if (locationManager != null) {
 			locationManager.removeUpdates(this);
+			locationManager = null;
 		}
 	}
 	
@@ -144,6 +152,7 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	    				button.setText(getString(R.string.help_me_button_cancel_text));
 	    				sendHelpMeRequest();
 	    			}
+	    			return v.performClick();
 	    		}
 	    		v.setBackgroundResource(R.color.help_me_button_up_color);
 	    		return false;
@@ -206,6 +215,14 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 		});
 	}
 	
+	private void displayProgressDialog() {
+		if (progressDialog == null || !progressDialog.isShowing()) {
+			progressDialog = ProgressDialog.show(this,
+        			getString(R.string.progress_dialog_default_title),
+        			getString(R.string.progress_dialog_default_message));
+		}
+	}
+	
 	OnTouchListener helpYouButtonTouchListener = new OnTouchListener() {
 	    @Override
 	    public boolean onTouch(View v, MotionEvent event) {
@@ -217,7 +234,9 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	    		return false;
 	    	case MotionEvent.ACTION_UP:
 	    		if (isTouchInButtonBounds(buttonBounds, v, event.getX(), event.getY())) {
+	    			displayProgressDialog();
 	    			sendHelpYouRequest(false);
+	    			return v.performClick();
 	    		}
 	    		v.setBackgroundResource(R.color.help_you_button_up_color);
 	    		return false;
@@ -229,6 +248,16 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 	    	return buttonBounds.contains(v.getLeft() + (int)x, v.getTop() + (int)y);
 	    }
 	};
+	
+	private void dismissProgressDialog() {
+		runOnUiThread(new Runnable() {
+	        public void run() {
+	        	if (progressDialog != null && progressDialog.isShowing()) {
+	        		progressDialog.dismiss();
+	        	}
+	        }
+		});
+	}
 	
 	private void sendHelpYouRequest(final boolean background) {
 		if (!sentHelpYouRequest) {
@@ -252,12 +281,16 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 						clearPollingUpdates();
 					}
 					sentHelpYouRequest = false;
+					
+					dismissProgressDialog();
 				}
 				
 				@Override
 				public void errorResponseRecieved(int status, String message) {
 					Log.w("sendHelpMeRequest", "Error response recieved while trying to request help me: " + message);
 					sentHelpYouRequest = false;
+					
+					dismissProgressDialog();
 				}
 			});
 		}
