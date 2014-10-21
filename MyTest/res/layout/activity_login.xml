@@ -8,49 +8,128 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/app_background_color"
     tools:context=".LoginActivity" >
+    
+    <TextView
+        android:id="@+id/LogInText"
+        android:text="@string/log_in_text"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+	    android:textStyle="bold" />
+    
+    <TextView
+        android:id="@+id/EmailLogInText"
+        android:text="@string/email_log_in_text"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:textSize="20sp"
+        android:layout_marginLeft="3dip"
+        android:layout_below="@+id/LogInText" />
+    
+    <EditText
+        android:id="@+id/EmailTextField"
+        android:layout_width="100sp"
+        android:layout_height="40sp"
+        android:layout_marginBottom="14dp"
+        android:layout_toLeftOf="@+id/EmailLogInText"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:layout_below="@+id/LogInText" >
+        <requestFocus />
+    </EditText>
+    
+    <TextView
+        android:id="@+id/PasswordLogInText"
+        android:text="@string/password_log_in_text"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:textSize="20sp"
+        android:layout_marginLeft="3dip"
+        android:layout_below="@+id/EmailLogInText" />
 
     <RelativeLayout
-        android:id="@+id/LoginAskForHelpButtonBorder"
-        android:layout_width="fill_parent"
-        android:layout_height="195dip"
-        android:background="@color/button_border" >
+        android:id="@+id/LoginButtonBorder"
+        android:layout_width="120sp"
+        android:layout_height="40sp"
+        android:background="@color/button_border"
+        android:layout_marginLeft="3dip"
+        android:layout_below="@+id/PasswordLogInText" >
         
 		<Button
-	        android:id="@+id/LoginAskForHelpButton"
+	        android:id="@+id/LoginButton"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
 	        android:layout_margin="3dip"
 	        android:background="@color/login_up_button"
 	        android:layout_centerHorizontal="true"
 	        android:layout_centerVertical="true"
-	        android:text="@string/login_ask_for_help_button_text"
-	        android:textSize="50sp"
+	        android:text="@string/log_in_button_text"
+	        android:textSize="20sp"
 	        android:textStyle="bold" />
     </RelativeLayout>
     
     <View
         android:id="@+id/LoginButtonBuffer"
         android:layout_width="fill_parent"
-        android:layout_height="20dip"
-        android:layout_below="@+id/LoginAskForHelpButtonBorder" />
+        android:layout_height="40dip"
+        android:layout_below="@+id/LoginButtonBorder" />
     
-	<RelativeLayout
-        android:id="@+id/LoginAssistButtonBorder"
-        android:layout_width="fill_parent"
-        android:layout_height="195dip"
+    <TextView
+        android:id="@+id/RegisterText"
+        android:text="@string/register_text"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+	    android:textStyle="bold"
+	    android:layout_below="@+id/LoginButtonBuffer" />
+    
+    <TextView
+        android:id="@+id/UsernameRegisterText"
+        android:text="@string/email_log_in_text"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:textSize="20sp"
+        android:layout_marginLeft="3dip"
+        android:layout_below="@+id/RegisterText" />
+    
+    <TextView
+        android:id="@+id/PasswordRegisterText"
+        android:text="@string/password_log_in_text"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:textSize="20sp"
+        android:layout_marginLeft="3dip"
+        android:layout_below="@+id/UsernameRegisterText" />
+    
+    <TextView
+        android:id="@+id/ConfirmPasswordRegisterText"
+        android:text="@string/confirm_password_register_text"
+        android:layout_width="wrap_content"
+        android:layout_height="40sp"
+        android:textSize="20sp"
+        android:layout_marginLeft="3dip"
+        android:layout_below="@+id/PasswordRegisterText" />
+
+    <RelativeLayout
+        android:id="@+id/RegisterButtonBorder"
+        android:layout_width="120sp"
+        android:layout_height="40sp"
         android:background="@color/button_border"
-        android:layout_below="@+id/LoginButtonBuffer" >
-    
-	    <Button
-	        android:id="@+id/LoginAssistButton"
+        android:layout_marginLeft="3dip"
+        android:layout_below="@+id/ConfirmPasswordRegisterText" >
+        
+		<Button
+	        android:id="@+id/RegisterButton"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
 	        android:layout_margin="3dip"
 	        android:background="@color/login_up_button"
 	        android:layout_centerHorizontal="true"
 	        android:layout_centerVertical="true"
-	        android:text="@string/login_assist_button_text"
-	        android:textSize="50sp"
+	        android:text="@string/register_button_text"
+	        android:textSize="20sp"
 	        android:textStyle="bold" />
     </RelativeLayout>
 

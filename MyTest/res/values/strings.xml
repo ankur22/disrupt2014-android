@@ -16,7 +16,7 @@
     <string name="help_you_will_help_url">/help/you</string>
     <string name="help_you_update_url">/help/you</string>
     <string name="help_you_get_event_url">/event/</string>
-    <string name="login_ask_for_help_button_text">Ask Test</string>
+    <string name="log_in_button_text">Log in</string>
     <string name="login_assist_button_text">Assist Test</string>
     <string name="login_ask_for_help_user_id">1</string>
     <string name="login_assist_user_id">2</string>
@@ -28,5 +28,11 @@
     <string name="exit_app_no_button">No</string>
     <string name="progress_dialog_default_title">Please wait</string>
     <string name="progress_dialog_default_message">Retrieving data now</string>
+    <string name="log_in_text">Log in</string>
+    <string name="email_log_in_text">Email</string>
+    <string name="password_log_in_text">Password</string>
+    <string name="confirm_password_register_text">Confirm password</string>
+    <string name="register_text">Register</string>
+    <string name="register_button_text">Register</string>
 
 </resources>
