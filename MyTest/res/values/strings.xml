@@ -34,5 +34,6 @@
     <string name="confirm_password_register_text">Confirm password</string>
     <string name="register_text">Register</string>
     <string name="register_button_text">Register</string>
+    <string name="email_hint">example@something.com</string>
 
 </resources>

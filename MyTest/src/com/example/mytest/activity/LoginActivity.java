@@ -26,12 +26,12 @@ public class LoginActivity extends Activity {
 	}
 	
 	private void setupLoginAskHelpButton() {
-		Button helpMeButton = (Button)findViewById(R.id.LoginAskForHelpButton);
+		Button helpMeButton = (Button)findViewById(R.id.LoginButton);
 		helpMeButton.setOnTouchListener(loginAskForHelpButtonTouchListener);
 	}
 	
 	private void setupLoginAssistButton() {
-		Button helpYouButton = (Button)findViewById(R.id.LoginAssistButton);
+		Button helpYouButton = (Button)findViewById(R.id.RegisterButton);
 		helpYouButton.setOnTouchListener(loginAssistButtonTouchListener);
 	}
 
