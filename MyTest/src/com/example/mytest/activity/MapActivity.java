@@ -18,6 +18,9 @@ import com.example.mytest.dto.RequestDTO;
 import com.example.mytest.dto.ResponseDTO;
 import com.example.mytest.dto.ResponseDTOListener;
 import com.example.mytest.model.GPSCoordinates;
+import com.example.mytest.model.Helper;
+import com.example.mytest.model.HelperMarker;
+import com.example.mytest.model.HelperMarkerContainer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -39,6 +42,7 @@ public class MapActivity extends FragmentActivity implements LocationListener, A
 	boolean zoomed = false;
 	
 	Marker helpee;
+	HelperMarkerContainer helperMarkerContainer;
 	
 	Alarm alarm;
 
@@ -48,6 +52,7 @@ public class MapActivity extends FragmentActivity implements LocationListener, A
 		setupLocationManager();
 		
 		helpYouDAO = new HelpYouDAO(getApplicationContext());
+		helperMarkerContainer = new HelperMarkerContainer();
 		
 		Intent intent = getIntent();
 		this.userId = intent.getStringExtra(getString(R.string.extra_user_id));
@@ -81,10 +86,19 @@ public class MapActivity extends FragmentActivity implements LocationListener, A
 //                .position(new LatLng(41.889, -87.622)));
 	}
 	
-	private Marker updateMarkerPosition(Marker marker, GPSCoordinates location) {
+	private Marker updateHelpeeMarkerPosition(Marker marker, GPSCoordinates location) {
+		return updateMarkerPosition(marker, location, true);
+	}
+	
+	private Marker updateHelperMarkerPosition(Marker marker, GPSCoordinates location) {
+		return updateMarkerPosition(marker, location, false);
+	}
+	
+	private Marker updateMarkerPosition(Marker marker, GPSCoordinates location, boolean helpee) {
 		if (marker == null) {
+			int resourceId = helpee ? R.drawable.you_marker : R.drawable.ic_launcher;
 			marker = map.addMarker(new MarkerOptions()
-	          .icon(BitmapDescriptorFactory.fromResource(R.drawable.you_marker))
+	          .icon(BitmapDescriptorFactory.fromResource(resourceId))
 	          .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
 	          .position(new LatLng(location.getLatitude(), location.getLongitude())));
 		} else {
@@ -167,11 +181,18 @@ public class MapActivity extends FragmentActivity implements LocationListener, A
 			public void successResponseRecieved(ResponseDTO responseDTO) {
 //				eventId = responseDTO.getEventId();
 				eventResponseDTO = (EventResponseDTO)responseDTO;
-				helpee = updateMarkerPosition(helpee, eventResponseDTO.getHelpeeCoords());
-//				setHelperPointsOnMap(eventResponseDTO.getHelpeeCoords(), true);
-//				for(GPSCoordinates coords : eventResponseDTO.getHelpers()) {
-//					setHelperPointsOnMap(coords, false);
-//				}
+				helpee = updateHelpeeMarkerPosition(helpee, eventResponseDTO.getHelpeeCoords());
+				
+				for(Helper helper : eventResponseDTO.getHelpers()) {
+					HelperMarker helperMarker = helperMarkerContainer.getHelperMarkerWithId(helper.getId());
+					if (helperMarker == null) {
+						Marker marker = null;
+						marker = updateHelperMarkerPosition(marker, helper.getLocation());
+						helperMarkerContainer.addHelperMarker(helper, marker);
+					} else {
+						updateHelpeeMarkerPosition(helperMarker.getMarker(), helper.getLocation());
+					}
+				}
 			}
 			
 			@Override

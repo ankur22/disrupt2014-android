@@ -8,10 +8,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.mytest.model.GPSCoordinates;
+import com.example.mytest.model.Helper;
 
 public class EventResponseDTO extends ResponseDTO {
 	
-	List<GPSCoordinates> helperLocations;
+	List<Helper> helperLocations;
 	GPSCoordinates helpeeLocation;
 
 	public EventResponseDTO(JSONObject jsonObject) {
@@ -26,14 +27,15 @@ public class EventResponseDTO extends ResponseDTO {
 			helpeeLocation.setLatitude(locationObject.getDouble("latitude"));
 			helpeeLocation.setLongitude(locationObject.getDouble("longitude"));
 			
-			helperLocations = new ArrayList<GPSCoordinates>();
+			helperLocations = new ArrayList<Helper>();
 			JSONArray array = body.getJSONArray("helpers");
 			for (int i = 0; i < array.length(); ++i) {
+				String id = ((JSONObject)array.get(i)).getString("id");
 				JSONObject object = ((JSONObject)array.get(i)).getJSONObject("location");
 				GPSCoordinates coord = new GPSCoordinates();
 				coord.setLatitude(object.getDouble("latitude"));
 				coord.setLongitude(object.getDouble("longitude"));
-				helperLocations.add(coord);
+				helperLocations.add(new Helper(coord, id));
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -45,7 +47,7 @@ public class EventResponseDTO extends ResponseDTO {
 		return helpeeLocation;
 	}
 	
-	public List<GPSCoordinates> getHelpers() {
+	public List<Helper> getHelpers() {
 		return helperLocations;
 	}
 }
