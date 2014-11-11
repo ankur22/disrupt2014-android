@@ -23,6 +23,7 @@ import com.example.mytest.controller.Alarm;
 import com.example.mytest.controller.AlarmListener;
 import com.example.mytest.dao.HelpMeDAO;
 import com.example.mytest.dao.HelpYouDAO;
+import com.example.mytest.dto.EventIdResponseDTO;
 import com.example.mytest.dto.RequestDTO;
 import com.example.mytest.dto.ResponseDTO;
 import com.example.mytest.dto.ResponseDTOListener;
@@ -172,7 +173,7 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 			
 			@Override
 			public void successResponseRecieved(ResponseDTO responseDTO) {
-				eventId = responseDTO.getEventId();
+				eventId = ((EventIdResponseDTO)responseDTO).getEventId();
 			}
 			
 			@Override
@@ -189,7 +190,7 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 			
 			@Override
 			public void successResponseRecieved(ResponseDTO responseDTO) {
-				eventId = responseDTO.getEventId();
+				eventId = ((EventIdResponseDTO)responseDTO).getEventId();
 			}
 			
 			@Override
@@ -268,7 +269,7 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 				
 				@Override
 				public void successResponseRecieved(ResponseDTO responseDTO) {
-					eventId = responseDTO.getEventId();
+					eventId = ((EventIdResponseDTO)responseDTO).getEventId();
 					if (eventId != null && eventId.equals("-1")) {
 						eventId = null;
 					}

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import com.example.mytest.model.GPSCoordinates;
 import com.example.mytest.model.Helper;
 
-public class EventResponseDTO extends ResponseDTO {
+public class EventResponseDTO extends EventIdResponseDTO {
 	
 	List<Helper> helperLocations;
 	GPSCoordinates helpeeLocation;

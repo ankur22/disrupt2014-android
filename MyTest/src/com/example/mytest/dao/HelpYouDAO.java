@@ -9,7 +9,7 @@ import com.android.volley.VolleyError;
 import com.example.mytest.R;
 import com.example.mytest.dto.EventResponseDTO;
 import com.example.mytest.dto.RequestDTO;
-import com.example.mytest.dto.ResponseDTO;
+import com.example.mytest.dto.EventIdResponseDTO;
 import com.example.mytest.dto.ResponseDTOListener;
 
 public class HelpYouDAO extends NetworkDAO {
@@ -22,7 +22,7 @@ public class HelpYouDAO extends NetworkDAO {
 		this.sendPostRequest(new Response.Listener<JSONObject>() {
 		    @Override
 		    public void onResponse(JSONObject response) {
-		    	listener.successResponseRecieved(new ResponseDTO(response));
+		    	listener.successResponseRecieved(new EventIdResponseDTO(response));
 		    }
 		}, new Response.ErrorListener() {
 		    @Override
@@ -37,7 +37,7 @@ public class HelpYouDAO extends NetworkDAO {
 		this.sendPostRequest(new Response.Listener<JSONObject>() {
 		    @Override
 		    public void onResponse(JSONObject response) {
-		    	listener.successResponseRecieved(new ResponseDTO(response));
+		    	listener.successResponseRecieved(new EventIdResponseDTO(response));
 		    }
 		}, new Response.ErrorListener() {
 		    @Override
@@ -52,7 +52,7 @@ public class HelpYouDAO extends NetworkDAO {
 		this.sendPostRequest(new Response.Listener<JSONObject>() {
 		    @Override
 		    public void onResponse(JSONObject response) {
-		    	listener.successResponseRecieved(new ResponseDTO(response));
+		    	listener.successResponseRecieved(new EventIdResponseDTO(response));
 		    }
 		}, new Response.ErrorListener() {
 		    @Override
