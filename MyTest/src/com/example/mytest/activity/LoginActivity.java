@@ -71,6 +71,7 @@ public class LoginActivity extends Activity {
 			progressDialog = ProgressDialog.show(this,
         			getString(R.string.progress_dialog_default_title),
         			getString(R.string.progress_dialog_default_message));
+			progressDialog.setCancelable(true);
 		}
 	}
 	
@@ -138,8 +139,8 @@ public class LoginActivity extends Activity {
 	    		return false;
 	    	case MotionEvent.ACTION_UP:
 	    		if (isTouchInButtonBounds(buttonBounds, v, event.getX(), event.getY())) {
-	    			sendLoginRequest();
 	    			displayProgressDialog();
+	    			sendLoginRequest();
 	    			return v.performClick();
 	    		}
 	    		v.setBackgroundResource(R.color.login_up_button);
@@ -205,8 +206,8 @@ public class LoginActivity extends Activity {
 	    		return false;
 	    	case MotionEvent.ACTION_UP:
 	    		if (isTouchInButtonBounds(buttonBounds, v, event.getX(), event.getY())) {
-	    			sendRegisterRequest();
 	    			displayProgressDialog();
+	    			sendRegisterRequest();
 	    			return v.performClick();
 	    		}
 	    		v.setBackgroundResource(R.color.login_up_button);

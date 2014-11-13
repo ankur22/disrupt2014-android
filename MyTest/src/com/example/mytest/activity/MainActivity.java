@@ -221,6 +221,7 @@ public class MainActivity extends Activity implements LocationListener, AlarmLis
 			progressDialog = ProgressDialog.show(this,
         			getString(R.string.progress_dialog_default_title),
         			getString(R.string.progress_dialog_default_message));
+			progressDialog.setCancelable(true);
 		}
 	}
 	
